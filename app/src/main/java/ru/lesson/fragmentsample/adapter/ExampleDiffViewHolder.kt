@@ -1,4 +1,4 @@
-package ru.lesson.fragmentsample.adapterdiff
+package ru.lesson.fragmentsample.adapter
 
 import androidx.recyclerview.widget.RecyclerView
 import ru.lesson.fragmentsample.databinding.ItemRecyclerDiffBinding

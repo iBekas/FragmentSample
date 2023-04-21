@@ -1,4 +1,4 @@
-package ru.lesson.fragmentsample.adapterdiff
+package ru.lesson.fragmentsample.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
