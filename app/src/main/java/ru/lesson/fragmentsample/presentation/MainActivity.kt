@@ -1,8 +1,10 @@
-package ru.lesson.fragmentsample
+package ru.lesson.fragmentsample.presentation
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import ru.lesson.fragmentsample.R
 import ru.lesson.fragmentsample.databinding.ActivityMainBinding
+import ru.lesson.fragmentsample.presentation.recycler.RecyclerFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -16,7 +18,7 @@ class MainActivity : AppCompatActivity() {
 
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.fragment_container, RecyclerDiffFragment())
+            .replace(R.id.fragment_container, RecyclerFragment())
             .commit()
 
     }

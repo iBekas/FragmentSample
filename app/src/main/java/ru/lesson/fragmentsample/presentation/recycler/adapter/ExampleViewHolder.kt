@@ -1,10 +1,10 @@
-package ru.lesson.fragmentsample.adapter
+package ru.lesson.fragmentsample.presentation.recycler.adapter
 
 import androidx.recyclerview.widget.RecyclerView
-import ru.lesson.fragmentsample.databinding.ItemRecyclerDiffBinding
-import ru.lesson.fragmentsample.model.ExampleModel
+import ru.lesson.fragmentsample.data.model.ExampleModel
+import ru.lesson.fragmentsample.databinding.ItemRecyclerBinding
 
-class ExampleDiffViewHolder(val binding: ItemRecyclerDiffBinding) : RecyclerView.ViewHolder(binding.root) {
+class ExampleViewHolder(val binding: ItemRecyclerBinding) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(exampleModel: ExampleModel) {
         //Устанавливаем отображаемые данные
