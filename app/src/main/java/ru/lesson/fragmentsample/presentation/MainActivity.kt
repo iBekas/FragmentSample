@@ -16,10 +16,11 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.fragment_container, RecyclerFragment())
-            .commit()
+        if (savedInstanceState == null)
+            supportFragmentManager
+                .beginTransaction()
+                .add(R.id.fragment_container, RecyclerFragment())
+                .commit()
 
     }
 

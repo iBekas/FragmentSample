@@ -1,19 +1,22 @@
 package ru.lesson.fragmentsample.presentation.recycler
 
-import android.os.Handler
-import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import ru.lesson.fragmentsample.data.repository.ItemRepository
 import ru.lesson.fragmentsample.data.repository.ItemRepositoryImpl
+import ru.lesson.fragmentsample.presentation.model.ExampleModel
+import ru.lesson.fragmentsample.presentation.model.Mapper
 
 
 class RecyclerViewModel(
     //Создаем экземпляр именно интерфейса ItemRepository, но инициализируем классом, который его имплемиентирует,
     // так мы сможешь в любой момент изменить реализацию, почти не затрагивая слой презентации
     private val itemRepository: ItemRepository = ItemRepositoryImpl()
-): ViewModel() {
+) : ViewModel() {
 
     //Инициализируем нашу LiveData, именно за ее изменениями следит наша View(фрагмент)
     //Про LiveData на самостоятельно изучение
@@ -32,23 +35,32 @@ class RecyclerViewModel(
     }
 
     private fun handleUIEvent(event: RecyclerEvent) {
-        when(event) {
+        when (event) {
+            //Обработка ивента типа object
             RecyclerEvent.GetItems -> getListItems()
+            //Обработка ивента типа class
+            is RecyclerEvent.AddItem -> addNewItem(item = event.item)
         }
     }
 
+    //Все функции viewModel приватные, кроме submitUIEvent
     private fun getListItems() {
-        // Не обращай внимания, этим ты не будешь пользоваться, нужно для задержки в 3 секеунды
-        val handler = Handler(Looper.getMainLooper())
+        // Не обращай внимания на viewModelScope.launch, это обсудим позже, пока пусть будет магией
+        // Нам это нужно сейчас чтобы задержку к 1.5 секунды поставить, для имитации загрузки
+        viewModelScope.launch {
+            // Запускаем отображение нашей загрузки
+            viewState = viewState.copy(isLoading = true)
+            delay(1500)
+            viewState = viewState.copy(
+                itemList = Mapper.transformToPresentation(itemRepository.getItems()),
+                isLoading = false
+            )
+        }
+    }
 
-        // Запускаем отображение нашей загрузки
-        viewState = viewState.copy(isLoading = true)
-            handler.postDelayed({
-            //ВАЖНО ТОЛЬКО ЭТО - кладем данные в нашу LiveData,
-                // в этот момент об этих данных узнает наша View(фрагмент), и так же останавливаем загрузку
-            viewState = viewState.copy(itemList = itemRepository.getItems(), isLoading = false)
-        }, 3000)
-
+    private fun addNewItem(item: ExampleModel) {
+        val currentItems = viewState.itemList
+        viewState = viewState.copy(itemList = currentItems + item)
     }
 
 }

@@ -4,8 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import ru.lesson.fragmentsample.data.model.ExampleModel
 import ru.lesson.fragmentsample.databinding.ItemRecyclerBinding
+import ru.lesson.fragmentsample.presentation.model.ExampleModel
 
 class ExampleListAdapter(val clickListener: (String) -> Unit) : ListAdapter<ExampleModel, ExampleViewHolder>(
     DIFF_CALLBACK

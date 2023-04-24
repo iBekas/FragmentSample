@@ -1,8 +1,8 @@
 package ru.lesson.fragmentsample.presentation.recycler.adapter
 
 import androidx.recyclerview.widget.RecyclerView
-import ru.lesson.fragmentsample.data.model.ExampleModel
 import ru.lesson.fragmentsample.databinding.ItemRecyclerBinding
+import ru.lesson.fragmentsample.presentation.model.ExampleModel
 
 class ExampleViewHolder(val binding: ItemRecyclerBinding) : RecyclerView.ViewHolder(binding.root) {
 

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import ru.lesson.fragmentsample.R
 import ru.lesson.fragmentsample.databinding.FragmentRecyclerBinding
 import ru.lesson.fragmentsample.presentation.detail.DetailFragment
+import ru.lesson.fragmentsample.presentation.model.ExampleModel
 import ru.lesson.fragmentsample.presentation.recycler.adapter.ExampleListAdapter
 
 
@@ -60,9 +61,25 @@ class RecyclerFragment : Fragment() {
         //Как только будут какие-либо изменения мы получим их здесь
         viewModel.viewStateObs.observe(viewLifecycleOwner) { state ->
 
+            //Устанавливаем видимость элементов в зависимости от загрузки
             binding.loader.isVisible = state.isLoading
+            binding.fabAddItem.isVisible = !state.isLoading
+            binding.rvFirst.isVisible = !state.isLoading
 
             adapter.submitList(state.itemList)
+        }
+
+        binding.fabAddItem.setOnClickListener {
+            //Еще один ивент для ViewModel
+            viewModel.submitUIEvent(
+                RecyclerEvent.AddItem(
+                    ExampleModel(
+                        id = -1L,
+                        name = "Новый",
+                        description = "Новый"
+                    )
+                )
+            )
         }
 
     }
