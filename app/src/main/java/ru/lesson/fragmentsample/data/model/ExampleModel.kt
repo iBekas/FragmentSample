@@ -1,4 +1,4 @@
-package ru.lesson.fragmentsample.model
+package ru.lesson.fragmentsample.data.model
 
 
 data class ExampleModel(
