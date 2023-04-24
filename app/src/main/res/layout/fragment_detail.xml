@@ -28,6 +28,6 @@
         app:layout_constraintTop_toBottomOf="@id/tv_name"
         android:inputType="text"
         android:autofillHints="name"
-        android:hint="Введите текст"/>
+        android:hint="@string/please_edit_text"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
