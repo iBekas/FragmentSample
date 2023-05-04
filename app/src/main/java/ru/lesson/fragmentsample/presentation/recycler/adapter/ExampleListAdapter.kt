@@ -12,7 +12,6 @@ class ExampleListAdapter(val clickListener: (String) -> Unit) : ListAdapter<Exam
 ) {
 
     companion object {
-        //Проверка по которой происходит обновление элементов списка
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ExampleModel>() {
             override fun areItemsTheSame(oldItem: ExampleModel, newItem: ExampleModel): Boolean {
                 return oldItem.id == newItem.id
@@ -25,20 +24,15 @@ class ExampleListAdapter(val clickListener: (String) -> Unit) : ListAdapter<Exam
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExampleViewHolder {
-        //Устанавливаем макет для одного элемента списка
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemRecyclerBinding.inflate(inflater, parent, false)
-        //Передаем макет в класс держателя
         return ExampleViewHolder(binding)
     }
 
 
     override fun onBindViewHolder(holder: ExampleViewHolder, position: Int) {
-        //Берем элемент по его позиции
         val exampleModel = getItem(position)
-        //.bind функция внутри ExampleViewHolder ожидающая exampleModel, holder экземпляр ExampleViewHolder
         holder.bind(exampleModel)
-        //Клик по root(весь макет) возвращает результат clickListener. Можно обработать как внутри ExampleViewHolder, так и здесь
         holder.binding.root.setOnClickListener { clickListener(exampleModel.name) }
     }
 }

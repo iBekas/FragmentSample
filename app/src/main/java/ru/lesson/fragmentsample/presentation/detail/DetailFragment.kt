@@ -42,7 +42,6 @@ class DetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         savedInstanceState?.let {
-            //Восстанавливаем текст из liveData
             binding.etText.setText(viewModel.userText.value ?: "")
         }
 
@@ -58,7 +57,6 @@ class DetailFragment : Fragment() {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                //Сохраняем изменения в liveData
                 s?.let {
                     viewModel.submitUIEvent(DetailEvent.SaveUserText(s.toString()))
                 }

@@ -20,8 +20,6 @@ class RecyclerFragment : Fragment() {
     private var _binding: FragmentRecyclerBinding? = null
     private val binding get() = _binding!!
 
-    //Получаем экземпляр нашей ViewModel. "by lazy" говорит о том, что экземпляр мы получим тогда,
-    // когда первый раз вызовем(используем ссылку) viewModel
     private val viewModel: RecyclerViewModel by lazy {
         ViewModelProvider(this)[RecyclerViewModel::class.java]
     }
@@ -49,19 +47,12 @@ class RecyclerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //Отправляем во ViewModel Event(событие) о необходимости загрузки данных
-        // submitUIEvent - название нам говорит о том же
-        // RecyclerEvent.GetItems - во ViewModel мы прописали, что будем делать, когда придет этот ивент
         viewModel.submitUIEvent(RecyclerEvent.GetItems)
 
         binding.rvFirst.layoutManager = LinearLayoutManager(requireActivity())
         binding.rvFirst.adapter = adapter
 
-        //Подписываемся на просмотр изменений в нашей MutableLiveData(RecyclerViewState())
-        //Как только будут какие-либо изменения мы получим их здесь
         viewModel.viewStateObs.observe(viewLifecycleOwner) { state ->
-
-            //Устанавливаем видимость элементов в зависимости от загрузки
             binding.loader.isVisible = state.isLoading
             binding.fabAddItem.isVisible = !state.isLoading
             binding.rvFirst.isVisible = !state.isLoading
@@ -70,7 +61,6 @@ class RecyclerFragment : Fragment() {
         }
 
         binding.fabAddItem.setOnClickListener {
-            //Еще один ивент для ViewModel
             viewModel.submitUIEvent(
                 RecyclerEvent.AddItem(
                     ExampleModel(

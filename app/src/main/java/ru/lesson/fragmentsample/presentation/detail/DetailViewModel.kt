@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 
 class DetailViewModel: ViewModel() {
 
-    //Пример LiveData c LiveData с примитивным типом данных
     val userText = MutableLiveData<String>()
 
     fun submitUIEvent(event: DetailEvent) {
@@ -15,7 +14,6 @@ class DetailViewModel: ViewModel() {
 
     private fun handleUIEvent(event: DetailEvent) {
         when (event) {
-            //Сохраняем в нашу LiveData
             is DetailEvent.SaveUserText -> userText.postValue(event.text)
         }
     }
