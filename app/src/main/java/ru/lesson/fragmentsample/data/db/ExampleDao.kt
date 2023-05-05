@@ -10,7 +10,7 @@ interface ExampleDao {
     suspend fun getAllExamples(): List<ExampleEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertExample(example: ExampleEntity)
+    suspend fun insertExample(example: ExampleEntity): Long
 
     @Query("DELETE FROM example_table WHERE id = :id")
     suspend fun deleteExample(id: Long)

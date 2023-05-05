@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import ru.lesson.fragmentsample.databinding.ItemRecyclerBinding
 import ru.lesson.fragmentsample.presentation.model.ExampleModel
 
-class ExampleListAdapter(val clickListener: (String) -> Unit) : ListAdapter<ExampleModel, ExampleViewHolder>(
+class ExampleListAdapter(val clickListener: (ExampleModel) -> Unit) : ListAdapter<ExampleModel, ExampleViewHolder>(
     DIFF_CALLBACK
 ) {
 
@@ -33,6 +33,6 @@ class ExampleListAdapter(val clickListener: (String) -> Unit) : ListAdapter<Exam
     override fun onBindViewHolder(holder: ExampleViewHolder, position: Int) {
         val exampleModel = getItem(position)
         holder.bind(exampleModel)
-        holder.binding.root.setOnClickListener { clickListener(exampleModel.name) }
+        holder.binding.root.setOnClickListener { clickListener(exampleModel) }
     }
 }

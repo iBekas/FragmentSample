@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -11,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import ru.lesson.fragmentsample.R
 import ru.lesson.fragmentsample.databinding.FragmentRecyclerBinding
 import ru.lesson.fragmentsample.presentation.detail.DetailFragment
-import ru.lesson.fragmentsample.presentation.model.ExampleModel
 import ru.lesson.fragmentsample.presentation.recycler.adapter.ExampleListAdapter
 
 
@@ -24,13 +24,13 @@ class RecyclerFragment : Fragment() {
         ViewModelProvider(this)[RecyclerViewModel::class.java]
     }
 
-    private val adapter = ExampleListAdapter { exampleModelName ->
+    private val adapter = ExampleListAdapter { model ->
         requireActivity()
             .supportFragmentManager
             .beginTransaction()
-            .add(
+            .replace(
                 R.id.fragment_container,
-                DetailFragment.newInstance(exampleModelName)
+                DetailFragment.newInstance(model)
             )
             .addToBackStack("")
             .commit()
@@ -57,19 +57,23 @@ class RecyclerFragment : Fragment() {
             binding.fabAddItem.isVisible = !state.isLoading
             binding.rvFirst.isVisible = !state.isLoading
 
+            //Ловим ошибку
+            if (state.errorText.isNotBlank())
+                Toast.makeText(context, state.errorText, Toast.LENGTH_SHORT).show()
+
             adapter.submitList(state.itemList)
         }
 
         binding.fabAddItem.setOnClickListener {
-            viewModel.submitUIEvent(
-                RecyclerEvent.AddItem(
-                    ExampleModel(
-                        id = 0,
-                        name = "Новый",
-                        description = "Новый"
-                    )
+            requireActivity()
+                .supportFragmentManager
+                .beginTransaction()
+                .replace(
+                    R.id.fragment_container,
+                    DetailFragment.newInstance(viewModel.viewState.getEmptyItem())
                 )
-            )
+                .addToBackStack("")
+                .commit()
         }
 
     }

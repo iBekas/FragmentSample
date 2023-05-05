@@ -8,7 +8,7 @@ interface ItemRepository {
 
     suspend fun getItems(): Resource<List<ExampleEntity>>
 
-    suspend fun insertExample(example: ExampleEntity): Resource<Unit>
+    suspend fun insertExample(example: ExampleEntity): Resource<Long>
 
     suspend fun deleteExample(id: Long): Resource<Unit>
 }

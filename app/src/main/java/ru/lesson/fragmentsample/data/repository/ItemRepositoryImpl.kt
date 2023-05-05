@@ -16,17 +16,12 @@ class ItemRepositoryImpl(private val exampleDao: ExampleDao): ItemRepository {
         }
         return Resource.Success(response)
 
-//        return listOf(
-//            ExampleEntity(id = 0, name = "Первый", description = "Описание первого"),
-//            ExampleEntity(id = 1, name = "Второй", description = "Описание второго"),
-//            ExampleEntity(id = 2, name = "Третий", description = "Описание третьего"),
-//            ExampleEntity(id = 3, name = "Четвертый", description = "Описание четвертого"),
-//        )
     }
 
-    override suspend fun insertExample(example: ExampleEntity): Resource<Unit> {
+    override suspend fun insertExample(example: ExampleEntity): Resource<Long> {
 
         val response = try {
+            //Вернет id нового элемента
             exampleDao.insertExample(example)
         } catch(e: Exception) {
             return Resource.Error("Херня, Витя, добавляй по новой.")
