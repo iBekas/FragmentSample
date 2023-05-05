@@ -9,6 +9,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import ru.lesson.fragmentsample.R
 import ru.lesson.fragmentsample.databinding.FragmentRecyclerBinding
 import ru.lesson.fragmentsample.presentation.detail.DetailFragment
@@ -24,17 +25,22 @@ class RecyclerFragment : Fragment() {
         ViewModelProvider(this)[RecyclerViewModel::class.java]
     }
 
-    private val adapter = ExampleListAdapter { model ->
-        requireActivity()
-            .supportFragmentManager
-            .beginTransaction()
-            .replace(
-                R.id.fragment_container,
-                DetailFragment.newInstance(model)
-            )
-            .addToBackStack("")
-            .commit()
-    }
+    private val adapter = ExampleListAdapter(
+        clickListener = { model ->
+            requireActivity()
+                .supportFragmentManager
+                .beginTransaction()
+                .replace(
+                    R.id.fragment_container,
+                    DetailFragment.newInstance(model)
+                )
+                .addToBackStack("")
+                .commit()
+        },
+        longClickListener = { id ->
+            onShowDeleteDialog(id)
+        }
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -76,6 +82,18 @@ class RecyclerFragment : Fragment() {
                 .commit()
         }
 
+    }
+
+    private fun onShowDeleteDialog(id: Long) {
+        MaterialAlertDialogBuilder(requireContext())
+            .setMessage(R.string.delete)
+            .setCancelable(true)
+            .setPositiveButton(R.string.yes) { _, _ ->
+                viewModel.submitUIEvent(RecyclerEvent.DeleteItem(id))
+            }
+            .setNegativeButton(R.string.no) { _, _ -> }
+            .create()
+            .show()
     }
 
     override fun onDestroyView() {
