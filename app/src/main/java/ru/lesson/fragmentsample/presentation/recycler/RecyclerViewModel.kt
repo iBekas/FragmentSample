@@ -36,17 +36,20 @@ class RecyclerViewModel(
     }
 
     private fun getListItems() {
+        //Результат выполнения suspend функции можно получить только внутри корутины(скоупа) - viewModelScope.launch
         viewModelScope.launch {
             viewState = viewState.copy(isLoading = true)
+            // Получаем наши данные, помним, что результат это Resource - успех, ошибка или загрузка
             val result = itemRepository.getItems()
             when (result) {
+                //Если успех
                 is Resource.Success -> {
                     viewState = viewState.copy(
                         itemList = Mapper.transformToPresentation(result.data ?: emptyList()),
                         isLoading = false
                     )
                 }
-
+                //Если ошибка
                 is Resource.Error -> {
                     viewState = viewState.copy(isLoading = false, errorText = result.message ?: "")
                 }

@@ -7,13 +7,19 @@ import ru.lesson.fragmentsample.util.Resource
 
 class ItemRepositoryImpl(private val exampleDao: ExampleDao): ItemRepository {
 
+    // suspend - это создание отложенной функции - корутины, т.е. ассинхронная операция
+    // Пока для простоты будем пользоваться корутинами.
+    // Resource - кастомный класс, чтобы прямо указать, если придет ошибка
     override suspend fun getItems(): Resource<List<ExampleEntity>> {
 
+        //Пытаемся получить данные из БД, если не вышло, ловим ошибку
         val response = try {
             exampleDao.getAllExamples()
         } catch(e: Exception) {
+            //Оборачиваем ошибку в Resource
             return Resource.Error("Херня, Витя, загружай по новой.")
         }
+        //Оборачиваем успешный результат в Resource
         return Resource.Success(response)
 
     }
