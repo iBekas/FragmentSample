@@ -1,13 +1,12 @@
 package ru.lesson.fragmentsample.presentation.model
 
 
-import ru.lesson.fragmentsample.data.model.ExampleModel
-//переназначаем имя ExampleModel из слоя презентации, чтобы не было путаницы
+import ru.lesson.fragmentsample.data.db.entity.ExampleEntity
 import ru.lesson.fragmentsample.presentation.model.ExampleModel as ExampleModelPresentation
 
 object Mapper {
 
-    private fun transformToPresentation(model: ExampleModel): ExampleModelPresentation {
+    private fun transformToPresentation(model: ExampleEntity): ExampleModelPresentation {
         return ExampleModelPresentation(
             id = model.id,
             name = model.name,
@@ -15,8 +14,16 @@ object Mapper {
         )
     }
 
-    fun transformToPresentation(task: List<ExampleModel>): List<ExampleModelPresentation> {
+    fun transformToPresentation(task: List<ExampleEntity>): List<ExampleModelPresentation> {
         return task.map { transformToPresentation(it) }
+    }
+
+    fun transformToData(model: ExampleModelPresentation): ExampleEntity {
+        return ExampleEntity(
+            id = model.id,
+            name = model.name,
+            description = model.description
+        )
     }
 
 }

@@ -5,5 +5,6 @@ import ru.lesson.fragmentsample.presentation.model.ExampleModel
 
 data class RecyclerViewState(
     val itemList: List<ExampleModel> = emptyList(),
-    val isLoading: Boolean = false
+    val isLoading: Boolean = false,
+    val errorText: String = ""
 )

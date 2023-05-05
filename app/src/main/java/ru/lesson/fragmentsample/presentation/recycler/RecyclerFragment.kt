@@ -64,7 +64,7 @@ class RecyclerFragment : Fragment() {
             viewModel.submitUIEvent(
                 RecyclerEvent.AddItem(
                     ExampleModel(
-                        id = -1L,
+                        id = 0,
                         name = "Новый",
                         description = "Новый"
                     )
