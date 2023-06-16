@@ -3,8 +3,9 @@ package ru.lesson.fragmentsample.presentation.recycler
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.addTo
 import ru.lesson.fragmentsample.app.App
 import ru.lesson.fragmentsample.data.repository.ItemRepository
 import ru.lesson.fragmentsample.data.repository.ItemRepositoryImpl
@@ -15,6 +16,9 @@ import ru.lesson.fragmentsample.util.Resource
 class RecyclerViewModel(
     private val itemRepository: ItemRepository = ItemRepositoryImpl(App.getExampleDao())
 ) : ViewModel() {
+
+    //Указатель завершения потоков
+    private val disposables = CompositeDisposable()
 
     private val _viewState = MutableLiveData(RecyclerViewState())
     val viewStateObs: LiveData<RecyclerViewState> get() = _viewState
@@ -36,46 +40,50 @@ class RecyclerViewModel(
     }
 
     private fun getListItems() {
-        //Результат выполнения suspend функции можно получить только внутри корутины(скоупа) - viewModelScope.launch
-        viewModelScope.launch {
-            viewState = viewState.copy(isLoading = true)
-            // Получаем наши данные, помним, что результат это Resource - успех, ошибка или загрузка
-            val result = itemRepository.getItems()
-            when (result) {
-                //Если успех
-                is Resource.Success -> {
-                    viewState = viewState.copy(
-                        itemList = Mapper.transformToPresentation(result.data ?: emptyList()),
+
+        itemRepository.getItems()
+            //Указываем поток на котром отобразим результат, в нашем случае это почти всегда Main поток
+            .observeOn(AndroidSchedulers.mainThread())
+            //Подписываемся на результат, именно этот блок запускат выполнение задачи и ждёт результат
+            .subscribe { result ->
+                //Аналогично корутинам
+                viewState = when (result) {
+                    Resource.Loading -> viewState.copy(isLoading = true)
+
+                    is Resource.Data -> viewState.copy(
+                        itemList = Mapper.transformToPresentation(result.data),
                         isLoading = false
                     )
-                }
-                //Если ошибка
-                is Resource.Error -> {
-                    viewState = viewState.copy(isLoading = false, errorText = result.message ?: "")
-                }
 
-                else -> {}
+                    is Resource.Error -> viewState.copy(isLoading = false, errorText = result.error.message ?: "")
+                }
             }
-        }
+            //Как только задача выполнена кидает поток в "мусорку"
+            .addTo(disposables)
+
     }
 
 
     private fun deleteItem(id: Long) {
-        viewModelScope.launch {
-            viewState = viewState.copy(isLoading = true)
-            val result = itemRepository.deleteExample(id)
-            when (result) {
-                is Resource.Success -> {
-                    getListItems()
-                }
 
-                is Resource.Error -> {
-                    viewState = viewState.copy(isLoading = false, errorText = result.message ?: "")
-                }
+        itemRepository.deleteExample(id)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { result ->
+                 when (result) {
+                    Resource.Loading -> viewState = viewState.copy(isLoading = true)
 
-                else -> {}
+                    is Resource.Data -> getListItems()
+
+                    is Resource.Error -> viewState = viewState.copy(isLoading = false, errorText = result.error.message ?: "")
+                }
             }
-        }
+            .addTo(disposables)
+
+    }
+
+    //Отчищаем нашу "мусорку" после уничтожения view model
+    override fun onCleared() {
+        disposables.clear()
     }
 
 }

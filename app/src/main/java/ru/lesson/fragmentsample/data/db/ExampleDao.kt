@@ -1,24 +1,26 @@
 package ru.lesson.fragmentsample.data.db
 
 import androidx.room.*
+import io.reactivex.Completable
+import io.reactivex.Observable
+import io.reactivex.Single
 import ru.lesson.fragmentsample.data.db.entity.ExampleEntity
 
 
-//Все запросы в БД
-//@Dao - указывает что это таблица
-//@Query, @Insert и т.п. - указание что делаем
-//Запросы ты сам уже должен уметь читать
 @Dao
 interface ExampleDao {
 
-    @Query("SELECT * FROM example_table")
-    suspend fun getAllExamples(): List<ExampleEntity>
+    //Есть пять типов возвращаемых значений Observable, Single, Flowable, Maybe, Completable
+    //Что они делаеют и зачем нужны на самостоятельно обучение
+    //В примере используются разные типа для примера, подобрать корректный в твоей ситуации - твоя задача
 
-    //OnConflictStrategy.REPLACE - в случае повторения данных происходит замена на более свежие
+    @Query("SELECT * FROM example_table")
+    fun getAllExamples(): Observable<List<ExampleEntity>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertExample(example: ExampleEntity): Long
+    fun insertExample(example: ExampleEntity): Single<Long>
 
     @Query("DELETE FROM example_table WHERE id = :id")
-    suspend fun deleteExample(id: Long)
+    fun deleteExample(id: Long): Completable
 
 }
