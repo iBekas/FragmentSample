@@ -16,4 +16,9 @@
     <string name="yes">Да</string>
     <string name="no">Нет</string>
 
+    <string name="settings">Настройки</string>
+    <string name="set_theme">Выберите тему</string>
+    <string name="first_theme">Первая тема</string>
+    <string name="second_theme">Вторая тема</string>
+
 </resources>

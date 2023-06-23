@@ -1,6 +1,7 @@
 package ru.lesson.fragmentsample.app
 
 import android.app.Application
+import android.content.SharedPreferences
 import androidx.room.Room
 import androidx.room.RoomMasterTable.TABLE_NAME
 import ru.lesson.fragmentsample.data.db.ExampleDao
@@ -12,10 +13,12 @@ class App : Application() {
         super.onCreate()
         appInstance = this
     }
-    companion object{
 
-        private var appInstance : App? = null
+    companion object {
+
+        private var appInstance: App? = null
         private var db: ExampleDataBase? = null
+        private var sharedPreferences: SharedPreferences? = null
 
         fun getExampleDao(): ExampleDao {
             checkDb()
@@ -34,6 +37,14 @@ class App : Application() {
                     .allowMainThreadQueries()
                     .build()
             }
+        }
+
+        fun getSettings(): SharedPreferences {
+            if (sharedPreferences == null) {
+                sharedPreferences =
+                    appInstance!!.applicationContext.getSharedPreferences("THEME", MODE_PRIVATE)
+            }
+            return sharedPreferences!!
         }
     }
 }
