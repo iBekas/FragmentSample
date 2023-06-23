@@ -10,10 +10,6 @@ import ru.lesson.fragmentsample.data.db.entity.ExampleEntity
 @Dao
 interface ExampleDao {
 
-    //Есть пять типов возвращаемых значений Observable, Single, Flowable, Maybe, Completable
-    //Что они делаеют и зачем нужны на самостоятельно обучение
-    //В примере используются разные типа для примера, подобрать корректный в твоей ситуации - твоя задача
-
     @Query("SELECT * FROM example_table")
     fun getAllExamples(): Observable<List<ExampleEntity>>
 

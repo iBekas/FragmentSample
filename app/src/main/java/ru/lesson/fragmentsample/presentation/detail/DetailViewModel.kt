@@ -17,7 +17,6 @@ class DetailViewModel(
     private val itemRepository: ItemRepository = ItemRepositoryImpl(App.getExampleDao())
 ): ViewModel() {
 
-    //Указатель завершения потоков
     private val disposables = CompositeDisposable()
 
     private val userTitle = MutableLiveData<String>()
@@ -45,11 +44,8 @@ class DetailViewModel(
                 description = userDescription.value ?: ""
             )
         ))
-            //Указываем поток на котром отобразим результат, в нашем случае это почти всегда Main поток
             .observeOn(AndroidSchedulers.mainThread())
-            //Подписываемся на результат, именно этот блок запускат выполнение задачи и ждёт результат
             .subscribe { resource ->
-                //Аналогично корутинам
                 when (resource) {
                     Resource.Loading -> { }
 
@@ -58,12 +54,10 @@ class DetailViewModel(
                     is Resource.Error -> { }
                 }
             }
-            //Как только задача выполнена кидает поток в "мусорку"
             .addTo(disposables)
 
     }
 
-    //Отчищаем нашу "мусорку" после уничтожения view model
     override fun onCleared() {
         disposables.clear()
     }

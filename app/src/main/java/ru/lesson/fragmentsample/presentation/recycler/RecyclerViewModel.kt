@@ -17,7 +17,6 @@ class RecyclerViewModel(
     private val itemRepository: ItemRepository = ItemRepositoryImpl(App.getExampleDao())
 ) : ViewModel() {
 
-    //Указатель завершения потоков
     private val disposables = CompositeDisposable()
 
     private val _viewState = MutableLiveData(RecyclerViewState())
@@ -42,11 +41,8 @@ class RecyclerViewModel(
     private fun getListItems() {
 
         itemRepository.getItems()
-            //Указываем поток на котром отобразим результат, в нашем случае это почти всегда Main поток
             .observeOn(AndroidSchedulers.mainThread())
-            //Подписываемся на результат, именно этот блок запускат выполнение задачи и ждёт результат
             .subscribe { result ->
-                //Аналогично корутинам
                 viewState = when (result) {
                     Resource.Loading -> viewState.copy(isLoading = true)
 
@@ -58,7 +54,6 @@ class RecyclerViewModel(
                     is Resource.Error -> viewState.copy(isLoading = false, errorText = result.error.message ?: "")
                 }
             }
-            //Как только задача выполнена кидает поток в "мусорку"
             .addTo(disposables)
 
     }
@@ -81,7 +76,6 @@ class RecyclerViewModel(
 
     }
 
-    //Отчищаем нашу "мусорку" после уничтожения view model
     override fun onCleared() {
         disposables.clear()
     }
