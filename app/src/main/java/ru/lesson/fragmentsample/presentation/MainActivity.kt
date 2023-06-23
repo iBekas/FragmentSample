@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        //Устанавливаем тему из SharedPreferences
         setTheme(App.getSettings().getInt(THEME_CODE, R.style.Theme_FragmentSample))
 
         if (savedInstanceState == null)
@@ -35,11 +36,14 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+
+    //Создаем верхнее меню
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu, menu)
         return true
     }
 
+    //Указываем действие для элементов меню
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.settings -> {
@@ -61,6 +65,7 @@ class MainActivity : AppCompatActivity() {
             .create()
 
         bindingMissed.firstTheme.setOnClickListener {
+            //Сохраняем код темы в SharedPreferences
             App.getSettings().edit().putInt(THEME_CODE, R.style.Theme_FragmentSample).apply()
             attentionDialog.dismiss()
             recreate()

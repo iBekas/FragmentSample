@@ -39,6 +39,7 @@ class App : Application() {
             }
         }
 
+        //Получаем экземпляр SharedPreferences, если его еще нет создаем
         fun getSettings(): SharedPreferences {
             if (sharedPreferences == null) {
                 sharedPreferences =
