@@ -28,7 +28,6 @@ class App : Application() {
         private fun checkDb() {
             if (db == null) {
                 val builder = Room.databaseBuilder(
-                    //Контекст самомго приложения
                     appInstance!!.applicationContext,
                     ExampleDataBase::class.java,
                     TABLE_NAME
@@ -39,7 +38,6 @@ class App : Application() {
             }
         }
 
-        //Получаем экземпляр SharedPreferences, если его еще нет создаем
         fun getSettings(): SharedPreferences {
             if (sharedPreferences == null) {
                 sharedPreferences =
