@@ -9,6 +9,7 @@ import io.reactivex.rxkotlin.addTo
 import ru.lesson.fragmentsample.app.App
 import ru.lesson.fragmentsample.data.repository.ItemRepository
 import ru.lesson.fragmentsample.data.repository.ItemRepositoryImpl
+import ru.lesson.fragmentsample.presentation.THEME_CODE
 import ru.lesson.fragmentsample.presentation.model.Mapper
 import ru.lesson.fragmentsample.util.Resource
 
@@ -27,6 +28,11 @@ class RecyclerViewModel(
             _viewState.value = value
         }
 
+    init {
+        viewState = viewState.copy(currentTheme = App.getSettings().getInt(THEME_CODE, 0))
+        getListItems()
+    }
+
     fun submitUIEvent(event: RecyclerEvent) {
         handleUIEvent(event)
     }
@@ -34,6 +40,11 @@ class RecyclerViewModel(
     private fun handleUIEvent(event: RecyclerEvent) {
         when (event) {
             RecyclerEvent.GetItems -> getListItems()
+            is RecyclerEvent.SetTheme -> setTheme(event.themeCode)
+            is RecyclerEvent.ShowDeleteDialog -> viewState =
+                viewState.copy(isShowDeleteDialog = event.isShow, deletableItemId = event.id)
+            is RecyclerEvent.ShowSettingsDialog -> viewState =
+                viewState.copy(isShowSettingsDialog = event.isShow)
             is RecyclerEvent.DeleteItem -> deleteItem(id = event.id)
         }
     }
@@ -46,12 +57,17 @@ class RecyclerViewModel(
                 viewState = when (result) {
                     Resource.Loading -> viewState.copy(isLoading = true)
 
-                    is Resource.Data -> viewState.copy(
-                        itemList = Mapper.transformToPresentation(result.data),
-                        isLoading = false
-                    )
+                    is Resource.Data -> {
+                        viewState.copy(
+                            itemList = Mapper.transformToPresentation(result.data),
+                            isLoading = false
+                        )
+                    }
 
-                    is Resource.Error -> viewState.copy(isLoading = false, errorText = result.error.message ?: "")
+                    is Resource.Error -> viewState.copy(
+                        isLoading = false,
+                        errorText = result.error.message ?: ""
+                    )
                 }
             }
             .addTo(disposables)
@@ -64,16 +80,22 @@ class RecyclerViewModel(
         itemRepository.deleteExample(id)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->
-                 when (result) {
+                when (result) {
                     Resource.Loading -> viewState = viewState.copy(isLoading = true)
 
                     is Resource.Data -> getListItems()
 
-                    is Resource.Error -> viewState = viewState.copy(isLoading = false, errorText = result.error.message ?: "")
+                    is Resource.Error -> viewState =
+                        viewState.copy(isLoading = false, errorText = result.error.message ?: "")
                 }
             }
             .addTo(disposables)
 
+    }
+
+    private fun setTheme(theme: Int) {
+        App.getSettings().edit().putInt(THEME_CODE, theme).apply()
+        viewState = viewState.copy(currentTheme = theme, isShowSettingsDialog = false)
     }
 
     override fun onCleared() {

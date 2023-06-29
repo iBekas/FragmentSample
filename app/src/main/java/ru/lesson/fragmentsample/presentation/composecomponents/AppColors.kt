@@ -84,11 +84,11 @@ fun lightColors(
 )
 
 fun darkColors(
-    primary: Color = Color(0xFFE4F0B1),
+    primary: Color = Color(0xFF217EF6),
     primaryVariant: Color = Color(0XFFE8F133),
     secondary: Color = Color(0xFF619F73),
     secondaryVariant: Color = Color(0xFF217EF6),
-    background: Color = Color(0xFF575241),
+    background: Color = Color(0XFFE8F133),
     surface: Color = Color(0xFF121212),
     error: Color = Color(0xFFCF6679),
     onPrimary: Color = Color.Black,
