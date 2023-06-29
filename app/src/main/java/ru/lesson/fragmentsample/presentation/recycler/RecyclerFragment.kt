@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.compose.runtime.Composable
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -14,9 +14,10 @@ import ru.lesson.fragmentsample.R
 import ru.lesson.fragmentsample.databinding.FragmentRecyclerBinding
 import ru.lesson.fragmentsample.presentation.detail.DetailFragment
 import ru.lesson.fragmentsample.presentation.recycler.adapter.ExampleListAdapter
+import ru.lesson.fragmentsample.presentation.composecomponents.ComposeFragment
 
 
-class RecyclerFragment : Fragment() {
+class RecyclerFragment : ComposeFragment() {
 
     private var _binding: FragmentRecyclerBinding? = null
     private val binding get() = _binding!!
@@ -41,6 +42,11 @@ class RecyclerFragment : Fragment() {
             onShowDeleteDialog(id)
         }
     )
+
+    @Composable
+    override fun GetContent() {
+        TODO("not implemented")
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

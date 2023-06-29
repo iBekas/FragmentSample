@@ -14,7 +14,7 @@ import ru.lesson.fragmentsample.databinding.ActivityMainBinding
 import ru.lesson.fragmentsample.databinding.DialogSettingsBinding
 import ru.lesson.fragmentsample.presentation.recycler.RecyclerFragment
 
-private const val THEME_CODE = "THEME_CODE"
+const val THEME_CODE = "THEME_CODE"
 
 class MainActivity : AppCompatActivity() {
 
