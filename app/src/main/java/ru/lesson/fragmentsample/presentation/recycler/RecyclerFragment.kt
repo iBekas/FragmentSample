@@ -31,7 +31,9 @@ import androidx.lifecycle.ViewModelProvider
 import ru.lesson.fragmentsample.R
 import ru.lesson.fragmentsample.presentation.composecomponents.AppTheme
 import ru.lesson.fragmentsample.presentation.composecomponents.ComposeFragment
+import ru.lesson.fragmentsample.presentation.composecomponents.FIRST_THEME
 import ru.lesson.fragmentsample.presentation.composecomponents.FragmentSampleTheme
+import ru.lesson.fragmentsample.presentation.composecomponents.SECOND_THEME
 import ru.lesson.fragmentsample.presentation.composecomponents.dialogs.DefaultDialog
 import ru.lesson.fragmentsample.presentation.composecomponents.dialogs.ItemsDialog
 import ru.lesson.fragmentsample.presentation.composecomponents.toolbar.Toolbar
@@ -65,7 +67,7 @@ class RecyclerFragment : ComposeFragment() {
         Column(modifier = Modifier.background(AppTheme.colors.background)) {
 
             Toolbar(
-                title = stringResource(id = R.string.app_name),
+                title = stringResource(id = R.string.recycler_fragment),
                 isBackArrowVisible = false,
                 actions = {
                     IconButton(onClick = {
@@ -87,6 +89,11 @@ class RecyclerFragment : ComposeFragment() {
                 items(
                     items = state.itemList,
                     itemContent = { item ->
+                        //При разных типах item
+                        // when(item.type) {
+                        //TYPE_NOTE -> Item(item)
+                        //TYPE_BIRTHDAY -> SomeItem(item)
+                        // }
                         Item(item)
                     }
                 )
@@ -121,7 +128,7 @@ class RecyclerFragment : ComposeFragment() {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(AppTheme.dimens.halfContentMargin)
+                .padding(AppTheme.dimens.contentMargin)
                 .combinedClickable(
                     onClick = { goToDetails(model) },
                     onLongClick = { viewModel.submitUIEvent(RecyclerEvent.ShowDeleteDialog(true, model.id)) },
@@ -136,7 +143,7 @@ class RecyclerFragment : ComposeFragment() {
                     .fillMaxWidth()
                     .padding(AppTheme.dimens.contentMargin)
             ) {
-                Text(text = model.name, style = AppTheme.typography.subtitle1)
+                Text(text = model.name, style = AppTheme.typography.h6)
                 Text(text = model.description, style = AppTheme.typography.body1)
             }
         }
@@ -167,8 +174,8 @@ class RecyclerFragment : ComposeFragment() {
             items = items,
             onItemClick = { position ->
                 when (position) {
-                    0 -> viewModel.submitUIEvent(RecyclerEvent.SetTheme(position))
-                    1 -> viewModel.submitUIEvent(RecyclerEvent.SetTheme(position))
+                    0 -> viewModel.submitUIEvent(RecyclerEvent.SetTheme(FIRST_THEME))
+                    1 -> viewModel.submitUIEvent(RecyclerEvent.SetTheme(SECOND_THEME))
                 }
             }
         ) { viewModel.submitUIEvent(RecyclerEvent.ShowSettingsDialog(false)) }
@@ -193,8 +200,9 @@ class RecyclerFragment : ComposeFragment() {
 
             val model = ExampleModel(
                 id = 0,
-                name = "name",
-                description = "description"
+                name = "Заметка",
+                description = "Ты собака, я собака, ты собака, я собака, ты собака, я собака, ты собака, " +
+                        "я собака, ты собака, я собака, ты собака, я собака, ты собака, я собака"
             )
 
             val state = RecyclerViewState(

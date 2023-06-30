@@ -3,8 +3,10 @@ package ru.lesson.fragmentsample.presentation.composecomponents
 import androidx.compose.material.ripple.LocalRippleTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.ui.platform.LocalConfiguration
 
+const val THEME_CODE = "THEME_CODE"
+const val FIRST_THEME = 0
+const val SECOND_THEME = 1
 
 private val LightColorPalette = lightColors()
 private val DarkColorPalette = darkColors()
@@ -15,19 +17,17 @@ fun FragmentSampleTheme(
     content: @Composable () -> Unit
 ) {
 
-    val colors = if (themeCode == 0) {
+    val colors = if (themeCode == FIRST_THEME) {
         LightColorPalette
     } else {
         DarkColorPalette
     }
 
-    val configuration = LocalConfiguration.current
-
     val dimensions: AppDimens
     val typography: AppTypography
 
     when(themeCode) {
-        0 -> {
+        FIRST_THEME -> {
             dimensions = normalDimensions()
             typography = normalTypography()
         }

@@ -6,7 +6,6 @@ import ru.lesson.fragmentsample.R
 import ru.lesson.fragmentsample.databinding.ActivityMainBinding
 import ru.lesson.fragmentsample.presentation.recycler.RecyclerFragment
 
-const val THEME_CODE = "THEME_CODE"
 
 class MainActivity : AppCompatActivity() {
 

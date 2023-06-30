@@ -9,7 +9,8 @@ import io.reactivex.rxkotlin.addTo
 import ru.lesson.fragmentsample.app.App
 import ru.lesson.fragmentsample.data.repository.ItemRepository
 import ru.lesson.fragmentsample.data.repository.ItemRepositoryImpl
-import ru.lesson.fragmentsample.presentation.THEME_CODE
+import ru.lesson.fragmentsample.presentation.composecomponents.SECOND_THEME
+import ru.lesson.fragmentsample.presentation.composecomponents.THEME_CODE
 import ru.lesson.fragmentsample.presentation.model.Mapper
 import ru.lesson.fragmentsample.util.Resource
 
@@ -29,7 +30,7 @@ class RecyclerViewModel(
         }
 
     init {
-        viewState = viewState.copy(currentTheme = App.getSettings().getInt(THEME_CODE, 0))
+        viewState = viewState.copy(currentTheme = App.getSettings().getInt(THEME_CODE, SECOND_THEME))
         getListItems()
     }
 

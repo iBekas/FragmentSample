@@ -16,9 +16,13 @@
     <string name="yes">Да</string>
     <string name="no">Нет</string>
 
+    <string name="recycler_fragment">Список заметок</string>
+    <string name="detail_fragment">Заметка</string>
     <string name="settings">Настройки</string>
     <string name="set_theme">Выберите тему</string>
     <string name="first_theme">Первая тема</string>
     <string name="second_theme">Вторая тема</string>
+    <string name="label_hint">Введите название заметки</string>
+    <string name="description_hint">Введите заметку</string>
 
 </resources>

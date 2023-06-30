@@ -1,11 +1,9 @@
 package ru.lesson.fragmentsample.presentation.detail
 
+import ru.lesson.fragmentsample.presentation.model.ExampleModel
+
 
 sealed class DetailEvent {
-
-    class SaveUserTitle(val text: String): DetailEvent()
-
-    class SaveUserDescription(val text: String): DetailEvent()
-
+    class SetItem(val item: ExampleModel): DetailEvent()
     class SaveItem(val id: Long): DetailEvent()
 }
