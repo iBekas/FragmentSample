@@ -22,7 +22,7 @@ class DetailViewModel(
 
     val exampleModel = MutableLiveData<ExampleModel>()
 
-    val currentTheme = MutableLiveData(0)
+    val currentTheme = MutableLiveData(FIRST_THEME)
     val exit = MutableLiveData(false)
 
     init {

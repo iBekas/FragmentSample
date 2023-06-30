@@ -87,7 +87,7 @@ fun darkColors(
     primary: Color = Color(0xFF217EF6),
     primaryVariant: Color = Color(0XFFE8F133),
     secondary: Color = Color(0xFF619F73),
-    secondaryVariant: Color = Color(0xFF217EF6),
+    secondaryVariant: Color = Color(0xFFFFC107),
     background: Color = Color(0XFFE8F133),
     surface: Color = Color(0xFF121212),
     error: Color = Color(0xFFCF6679),

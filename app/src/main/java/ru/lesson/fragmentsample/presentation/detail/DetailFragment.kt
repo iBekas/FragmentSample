@@ -3,9 +3,13 @@ package ru.lesson.fragmentsample.presentation.detail
 import android.content.res.Configuration
 import android.os.Build
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
@@ -19,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
 import ru.lesson.fragmentsample.R
@@ -82,52 +87,74 @@ class DetailFragment : ComposeFragment() {
                 onBackClick = { goBack() }
             )
 
-            TextField(
-                modifier = Modifier.fillMaxWidth(),
-                value = currentName,
-                onValueChange = {
-                    currentName = it
-                    item.name = it
-                    viewModel.submitUIEvent(DetailEvent.SetItem(item))
-                },
-                placeholder = {
-                    Text(
-                        text = stringResource(id = R.string.label_hint),
-                        style = AppTheme.typography.body1
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(AppTheme.dimens.halfContentMargin)
+                    .border(
+                        width = 1.dp,
+                        color = AppTheme.colors.secondaryVariant,
+                        shape = RoundedCornerShape(AppTheme.dimens.contentMargin)
                     )
-                },
-                colors = TextFieldDefaults.textFieldColors(
-                    backgroundColor = Color.Transparent,
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                    disabledIndicatorColor = Color.Transparent,
-                    cursorColor = AppTheme.colors.secondary
-                ),
-            )
-            TextField(
+            ) {
+                TextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = currentName,
+                    onValueChange = {
+                        currentName = it
+                        item.name = it
+                        viewModel.submitUIEvent(DetailEvent.SetItem(item))
+                    },
+                    placeholder = {
+                        Text(
+                            text = stringResource(id = R.string.label_hint),
+                            style = AppTheme.typography.body1
+                        )
+                    },
+                    colors = TextFieldDefaults.textFieldColors(
+                        backgroundColor = Color.Transparent,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                        disabledIndicatorColor = Color.Transparent,
+                        cursorColor = AppTheme.colors.secondary
+                    ),
+                )
+            }
+
+            Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .weight(1f),
-                value = currentDescription,
-                onValueChange = {
-                    currentDescription = it
-                    item.description = it
-                    viewModel.submitUIEvent(DetailEvent.SetItem(item))
-                },
-                placeholder = {
-                    Text(
-                        text = stringResource(id = R.string.description_hint),
-                        style = AppTheme.typography.body1
+                    .weight(1f)
+                    .padding(AppTheme.dimens.halfContentMargin)
+                    .border(
+                        width = 1.dp,
+                        color = AppTheme.colors.secondaryVariant,
+                        shape = RoundedCornerShape(AppTheme.dimens.contentMargin)
                     )
-                },
-                colors = TextFieldDefaults.textFieldColors(
-                    backgroundColor = Color.Transparent,
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                    disabledIndicatorColor = Color.Transparent,
-                    cursorColor = AppTheme.colors.secondary
-                ),
-            )
+            ) {
+                TextField(
+                    modifier = Modifier.fillMaxSize(),
+                    value = currentDescription,
+                    onValueChange = {
+                        currentDescription = it
+                        item.description = it
+                        viewModel.submitUIEvent(DetailEvent.SetItem(item))
+                    },
+                    placeholder = {
+                        Text(
+                            text = stringResource(id = R.string.description_hint),
+                            style = AppTheme.typography.body1
+                        )
+                    },
+                    colors = TextFieldDefaults.textFieldColors(
+                        backgroundColor = Color.Transparent,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                        disabledIndicatorColor = Color.Transparent,
+                        cursorColor = AppTheme.colors.secondary
+                    ),
+                )
+            }
 
             PrimaryButton(
                 modifier = Modifier.fillMaxWidth(),
