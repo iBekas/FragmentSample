@@ -4,8 +4,14 @@ import android.app.Application
 import android.content.SharedPreferences
 import androidx.room.Room
 import androidx.room.RoomMasterTable.TABLE_NAME
+import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 import ru.lesson.fragmentsample.data.db.ExampleDao
 import ru.lesson.fragmentsample.data.db.ExampleDataBase
+import ru.lesson.fragmentsample.data.network.PokeApi
+
+private const val BASE_URL = "https://pokeapi.co/api/v2/"
 
 class App : Application() {
 
@@ -19,6 +25,7 @@ class App : Application() {
         private var appInstance: App? = null
         private var db: ExampleDataBase? = null
         private var sharedPreferences: SharedPreferences? = null
+        private var api: PokeApi? = null
 
         fun getExampleDao(): ExampleDao {
             checkDb()
@@ -44,6 +51,16 @@ class App : Application() {
                     appInstance!!.applicationContext.getSharedPreferences("THEME", MODE_PRIVATE)
             }
             return sharedPreferences!!
+        }
+
+        fun getPokemonApi(): PokeApi {
+            return api
+                ?: Retrofit.Builder()
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .baseUrl(BASE_URL)
+                    .build()
+                    .create(PokeApi::class.java)
         }
     }
 }

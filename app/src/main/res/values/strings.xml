@@ -25,4 +25,6 @@
     <string name="label_hint">Введите название заметки</string>
     <string name="description_hint">Введите заметку</string>
 
+    <string name="pokemons_label">Покемоны</string>
+
 </resources>

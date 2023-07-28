@@ -19,6 +19,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ImageSearch
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
@@ -39,6 +40,7 @@ import ru.lesson.fragmentsample.presentation.composecomponents.dialogs.ItemsDial
 import ru.lesson.fragmentsample.presentation.composecomponents.toolbar.Toolbar
 import ru.lesson.fragmentsample.presentation.detail.DetailFragment
 import ru.lesson.fragmentsample.presentation.model.ExampleModel
+import ru.lesson.fragmentsample.presentation.pokemons.pokemonlist.PokemonsListFragment
 
 
 class RecyclerFragment : ComposeFragment() {
@@ -75,6 +77,22 @@ class RecyclerFragment : ComposeFragment() {
                     }) {
                         Icon(
                             imageVector = Icons.Filled.Settings,
+                            contentDescription = null
+                        )
+                    }
+                    IconButton(onClick = {
+                        requireActivity()
+                            .supportFragmentManager
+                            .beginTransaction()
+                            .replace(
+                                R.id.fragment_container,
+                                PokemonsListFragment()
+                            )
+                            .addToBackStack("")
+                            .commit()
+                    }) {
+                        Icon(
+                            imageVector = Icons.Filled.ImageSearch,
                             contentDescription = null
                         )
                     }
