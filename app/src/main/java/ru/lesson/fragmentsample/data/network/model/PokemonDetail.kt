@@ -3,6 +3,7 @@ package ru.lesson.fragmentsample.data.network.model
 import com.google.gson.annotations.SerializedName
 
 
+//Здесь не все поля, просто пример
 data class PokemonDetail(
     @SerializedName("base_experience")
     val baseExperience: Int,
